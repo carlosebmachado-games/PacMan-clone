@@ -20,7 +20,6 @@ import com.humanaxe.systems.UI;
 import com.humanaxe.overall.World;
 import static com.humanaxe.overall.World.TILE_SIZE;
 import java.awt.Font;
-import java.awt.color.ColorSpace;
 
 public final class Game extends Canvas
         implements Runnable, KeyListener {
@@ -29,7 +28,7 @@ public final class Game extends Canvas
     public static JFrame frame;
     private Thread thread;
     private boolean isRunning = true;
-    public static final int SCREEN_WIDTH = 27 * World.TILE_SIZE;
+    public static final int SCREEN_WIDTH = 27 * World.TILE_SIZE/* + 112*/;
     //public static final int SCREEN_HEIGHT = 31 * World.TILE_SIZE;
     public static final int SCREEN_HEIGHT = SCREEN_WIDTH / 16 * 9;
     public static final int SCALE = 2;
@@ -256,8 +255,7 @@ public final class Game extends Canvas
     }
 
     public static void main(String args[]) {
-        Game game = new Game();
-        game.start();
+        new Game().start();
     }
 
 }

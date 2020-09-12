@@ -24,6 +24,8 @@ public class Player extends Entity {
     public int dir = BALL;
     public int newDir = BALL;
     public boolean opened = false;
+    
+    private int ox = 0, oy = 0;
 
     private int animCurFrame = 0, animMaxFrames = 5;
 
@@ -75,18 +77,33 @@ public class Player extends Entity {
             Game.state = Game.WIN;
         }
 
-        animCurFrame++;
-        if (animCurFrame >= animMaxFrames) {
-            opened = !opened;
-            animCurFrame = 0;
+        if(moving()){
+            animCurFrame++;
+            if (animCurFrame >= animMaxFrames) {
+                opened = !opened;
+                animCurFrame = 0;
+            }
+        }else{
+            opened = true;
         }
         
         updateCamera();
     }
+    
+    private boolean moving(){
+        boolean moving = false;
+        if(ox != getX() || oy != getY())
+            moving = true;
+        ox = getX();
+        oy = getY();
+        return moving;
+    }
 
     public void updateCamera() {
-        Camera.x = Camera.clamp(this.getX() - (Game.WIDTH / 2), 0, World.WIDTH * 16 - Game.WIDTH);
-        Camera.y = Camera.clamp(this.getY() - (Game.HEIGHT / 2), 0, World.HEIGHT * 16 - Game.HEIGHT);
+        Camera.x = Camera.clamp(getX() - (Game.SCREEN_WIDTH / 2), 0, 
+                World.WIDTH * World.TILE_SIZE - Game.SCREEN_WIDTH);
+        Camera.y = Camera.clamp(getY() - (Game.SCREEN_HEIGHT / 2), 0, 
+                World.HEIGHT * World.TILE_SIZE - Game.SCREEN_HEIGHT);
     }
 
     public void verificarPegaFruta() {

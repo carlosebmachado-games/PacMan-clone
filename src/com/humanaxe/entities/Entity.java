@@ -58,10 +58,10 @@ public class Entity {
         return 0;
     };
 
-    public void updateCamera() {
-        Camera.x = Camera.clamp(this.getX() - (Game.SCREEN_WIDTH / 2), 0, World.WIDTH * World.TILE_SIZE - Game.SCREEN_WIDTH);
-        Camera.y = Camera.clamp(this.getY() - (Game.SCREEN_HEIGHT / 2), 0, World.HEIGHT * World.TILE_SIZE - Game.SCREEN_HEIGHT);
-    }
+//    public void updateCamera() {
+//        Camera.x = Camera.clamp(this.getX() - (Game.SCREEN_WIDTH / 2), 0, World.WIDTH * World.TILE_SIZE - Game.SCREEN_WIDTH);
+//        Camera.y = Camera.clamp(this.getY() - (Game.SCREEN_HEIGHT / 2), 0, World.HEIGHT * World.TILE_SIZE - Game.SCREEN_HEIGHT);
+//    }
 
     public void setX(int newX) {
         this.x = newX;
@@ -88,7 +88,6 @@ public class Entity {
     }
 
     public void tick() {
-        updateCamera();
     }
 
     public double calculateDistance(int x1, int y1, int x2, int y2) {

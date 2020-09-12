@@ -10,7 +10,6 @@ import javax.imageio.ImageIO;
 import com.humanaxe.entities.Enemy;
 import com.humanaxe.entities.Entity;
 import com.humanaxe.entities.Food;
-import com.humanaxe.entities.Player;
 import com.humanaxe.entities.Power;
 import com.humanaxe.main.Game;
 
