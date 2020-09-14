@@ -49,10 +49,6 @@ public class World {
                         case WALL:
                             tiles[xx + (yy * WIDTH)] = new WallTile(xx * TILE_SIZE, yy * TILE_SIZE, Tile.TILE_WALL);
                             break;
-                        case PLAYER:
-                            Game.player.setX(xx * TILE_SIZE);
-                            Game.player.setY(yy * TILE_SIZE);
-                            break;
                         case FOOD: {
                             Food fruta = new Food(xx * TILE_SIZE, yy * TILE_SIZE, TILE_SIZE, TILE_SIZE, 0, Entity.FOOD);
                             Game.entities.add(fruta);
@@ -65,32 +61,47 @@ public class World {
                             Game.totalFruit++;
                             break;
                         }
-                        case RGHOST: {
-                            Enemy enemy = new Enemy(xx * TILE_SIZE, yy * TILE_SIZE, TILE_SIZE, TILE_SIZE, 4, Entity.RGHOST);
-                            Game.entities.add(enemy);
-                            break;
-                        }
-                        case BGHOST: {
-                            Enemy enemy = new Enemy(xx * TILE_SIZE, yy * TILE_SIZE, TILE_SIZE, TILE_SIZE, 3, Entity.BGHOST);
-                            Game.entities.add(enemy);
-                            break;
-                        }
-                        case PGHOST: {
-                            Enemy enemy = new Enemy(xx * TILE_SIZE, yy * TILE_SIZE, TILE_SIZE, TILE_SIZE, 2, Entity.PGHOST);
-                            Game.entities.add(enemy);
-                            break;
-                        }
-                        case YGHOST: {
-                            Enemy enemy = new Enemy(xx * TILE_SIZE, yy * TILE_SIZE, TILE_SIZE, TILE_SIZE, 1, Entity.YGHOST);
-                            Game.entities.add(enemy);
-                            break;
-                        }
                         default:
                             break;
                     }
                 }
             }
-        } catch (IOException e) {}
+            setEntitiesDefaultPosition();
+        } catch (IOException e) {
+        }
+    }
+
+    public static void setEntitiesDefaultPosition() {
+        setPlayerDefaultPosition();
+        setRedGhostDefaultPosition();
+        setBlueGhostDefaultPosition();
+        setPinkGhostDefaultPosition();
+        setOrangeGhostDefaultPosition();
+        Game.redGhost.stopped = false;
+    }
+    public static void setPlayerDefaultPosition() {
+        Game.player.setX((int) (13.5 * TILE_SIZE));
+        Game.player.setY((int) (23 * TILE_SIZE));
+    }
+    public static void setRedGhostDefaultPosition() {
+        Game.redGhost.setX((int) (13.5 * TILE_SIZE));
+        Game.redGhost.setY((int) (11 * TILE_SIZE));
+        Game.redGhost.path = null;
+    }
+    public static void setBlueGhostDefaultPosition() {
+        Game.blueGhost.setX((int) (11.5 * TILE_SIZE));
+        Game.blueGhost.setY((int) (14 * TILE_SIZE));
+        Game.blueGhost.path = null;
+    }
+    public static void setPinkGhostDefaultPosition() {
+        Game.pinkGhost.setX((int) (13.5 * TILE_SIZE));
+        Game.pinkGhost.setY((int) (14 * TILE_SIZE));
+        Game.pinkGhost.path = null;
+    }
+    public static void setOrangeGhostDefaultPosition() {
+        Game.orangeGhost.setX((int) (15.5 * TILE_SIZE));
+        Game.orangeGhost.setY((int) (14 * TILE_SIZE));
+        Game.orangeGhost.path = null;
     }
 
     public static boolean isFree(int xnext, int ynext) {

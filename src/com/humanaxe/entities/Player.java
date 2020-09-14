@@ -16,20 +16,20 @@ public class Player extends Entity {
     public BufferedImage sprite_up;
     public BufferedImage sprite_down;
 
-    public final int UP = 0;
-    public final int DOWN = 1;
-    public final int LEFT = 2;
-    public final int RIGHT = 3;
-    public final int BALL = 4;
+    public static final int UP = 0;
+    public static final int DOWN = 1;
+    public static final int LEFT = 2;
+    public static final int RIGHT = 3;
+    public static final int BALL = 4;
     public int dir = BALL;
     public int newDir = BALL;
     public boolean opened = false;
-    
+
     private int ox = 0, oy = 0;
 
     private int animCurFrame = 0, animMaxFrames = 5;
 
-    public int lifes = 3;
+    public static int lifes = 3;
 
     public Player(int x, int y, int width, int height, double speed, BufferedImage sprite) {
         super(x, y, width, height, speed, sprite);
@@ -73,36 +73,50 @@ public class Player extends Entity {
 
         verificarPegaFruta();
 
-        if (Game.totalFruit == Game.curFruit) {
+        if (Game.curFruit >= Game.totalFruit) {
             Game.state = Game.WIN;
         }
+        if (lifes <= 0) {
+            Game.state = Game.LOSE;
+        }
 
-        if(moving()){
+        System.out.println("cond: "+(Game.SCREEN_WIDTH * Game.SCALE - World.TILE_SIZE));
+        System.out.println("x: "+x);
+        if (x >= Game.SCREEN_WIDTH * Game.SCALE - World.TILE_SIZE - 1) {
+            Game.player.setX((int) (0 * World.TILE_SIZE + 2));
+            Game.player.setY((int) (14 * World.TILE_SIZE));
+        } else if (x <= 1 ) {
+            Game.player.setX((int) (27 * World.TILE_SIZE - 2));
+            Game.player.setY((int) (14 * World.TILE_SIZE));
+        }
+
+        if (moving()) {
             animCurFrame++;
             if (animCurFrame >= animMaxFrames) {
                 opened = !opened;
                 animCurFrame = 0;
             }
-        }else{
+        } else {
             opened = true;
         }
-        
+
         updateCamera();
     }
-    
-    private boolean moving(){
+
+    private boolean moving() {
         boolean moving = false;
-        if(ox != getX() || oy != getY())
+        if (ox != getX() || oy != getY()) {
             moving = true;
+        }
         ox = getX();
         oy = getY();
         return moving;
     }
 
     public void updateCamera() {
-        Camera.x = Camera.clamp(getX() - (Game.SCREEN_WIDTH / 2), 0, 
+        Camera.x = Camera.clamp(getX() - (Game.SCREEN_WIDTH / 2), 0,
                 World.WIDTH * World.TILE_SIZE - Game.SCREEN_WIDTH);
-        Camera.y = Camera.clamp(getY() - (Game.SCREEN_HEIGHT / 2), 0, 
+        Camera.y = Camera.clamp(getY() - (Game.SCREEN_HEIGHT / 2), 0,
                 World.HEIGHT * World.TILE_SIZE - Game.SCREEN_HEIGHT);
     }
 

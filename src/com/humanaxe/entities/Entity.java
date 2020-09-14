@@ -15,13 +15,13 @@ import com.humanaxe.overall.World;
 
 public class Entity {
 
-    public static BufferedImage FOOD   = Game.spritesheet.getSprite(World.TILE_SIZE * 1, World.TILE_SIZE * 3, World.TILE_SIZE, World.TILE_SIZE);
-    public static BufferedImage POWER  = Game.spritesheet.getSprite(World.TILE_SIZE * 2, World.TILE_SIZE * 3, World.TILE_SIZE, World.TILE_SIZE);
+    public static BufferedImage FOOD = Game.spritesheet.getSprite(World.TILE_SIZE * 1, World.TILE_SIZE * 3, World.TILE_SIZE, World.TILE_SIZE);
+    public static BufferedImage POWER = Game.spritesheet.getSprite(World.TILE_SIZE * 2, World.TILE_SIZE * 3, World.TILE_SIZE, World.TILE_SIZE);
     public static BufferedImage RGHOST = Game.spritesheet.getSprite(World.TILE_SIZE * 0, World.TILE_SIZE * 2, World.TILE_SIZE, World.TILE_SIZE);
-    public static BufferedImage BGHOST = Game.spritesheet.getSprite(World.TILE_SIZE * 1, World.TILE_SIZE * 2, World.TILE_SIZE, World.TILE_SIZE);
-    public static BufferedImage PGHOST = Game.spritesheet.getSprite(World.TILE_SIZE * 2, World.TILE_SIZE * 2, World.TILE_SIZE, World.TILE_SIZE);
-    public static BufferedImage YGHOST = Game.spritesheet.getSprite(World.TILE_SIZE * 3, World.TILE_SIZE * 2, World.TILE_SIZE, World.TILE_SIZE);
-    public static BufferedImage GHOST  = Game.spritesheet.getSprite(World.TILE_SIZE * 3, World.TILE_SIZE * 0, World.TILE_SIZE, World.TILE_SIZE);
+    public static BufferedImage BGHOST = Game.spritesheet.getSprite(World.TILE_SIZE * 3, World.TILE_SIZE * 2, World.TILE_SIZE, World.TILE_SIZE);
+    public static BufferedImage PGHOST = Game.spritesheet.getSprite(World.TILE_SIZE * 1, World.TILE_SIZE * 2, World.TILE_SIZE, World.TILE_SIZE);
+    public static BufferedImage OGHOST = Game.spritesheet.getSprite(World.TILE_SIZE * 2, World.TILE_SIZE * 2, World.TILE_SIZE, World.TILE_SIZE);
+    public static BufferedImage GHOST = Game.spritesheet.getSprite(World.TILE_SIZE * 3, World.TILE_SIZE * 0, World.TILE_SIZE, World.TILE_SIZE);
 
     protected double x;
     protected double y;
@@ -31,15 +31,16 @@ public class Entity {
 
     public int depth;
 
-    protected List<Node> path;
+    public List<Node> path;
 
     public boolean debug = false;
 
-    private BufferedImage sprite;
+    protected BufferedImage sprite;
 
     public static Random rand = new Random();
 
-    public Entity(double x, double y, int width, int height, double speed, BufferedImage sprite) {
+    public Entity(double x, double y, int width, int height,
+            double speed, BufferedImage sprite) {
         this.x = x;
         this.y = y;
         this.speed = speed;
@@ -57,11 +58,6 @@ public class Entity {
         }
         return 0;
     };
-
-//    public void updateCamera() {
-//        Camera.x = Camera.clamp(this.getX() - (Game.SCREEN_WIDTH / 2), 0, World.WIDTH * World.TILE_SIZE - Game.SCREEN_WIDTH);
-//        Camera.y = Camera.clamp(this.getY() - (Game.SCREEN_HEIGHT / 2), 0, World.HEIGHT * World.TILE_SIZE - Game.SCREEN_HEIGHT);
-//    }
 
     public void setX(int newX) {
         this.x = newX;
@@ -98,21 +94,19 @@ public class Entity {
         if (path != null) {
             if (path.size() > 0) {
                 Vector2i target = path.get(path.size() - 1).tile;
-                //xprev = x;
-                //yprev = y;
+
                 if (x < target.x * World.TILE_SIZE) {
-                    x++;
+                    x += speed;
                 } else if (x > target.x * World.TILE_SIZE) {
-                    x--;
-                }
-
-                if (y < target.y * World.TILE_SIZE) {
-                    y++;
+                    x -= speed;
+                } else if (y < target.y * World.TILE_SIZE) {
+                    y += speed;
                 } else if (y > target.y * World.TILE_SIZE) {
-                    y--;
+                    y -= speed;
                 }
 
-                if (x == target.x * World.TILE_SIZE && y == target.y * World.TILE_SIZE) {
+                if (x == target.x * World.TILE_SIZE
+                        && y == target.y * World.TILE_SIZE) {
                     path.remove(path.size() - 1);
                 }
             }
@@ -120,14 +114,17 @@ public class Entity {
     }
 
     public static boolean isColidding(Entity e1, Entity e2) {
-        Rectangle e1Mask = new Rectangle(e1.getX(), e1.getY(), e1.getWidth(), e1.getHeight());
-        Rectangle e2Mask = new Rectangle(e2.getX(), e2.getY(), e2.getWidth(), e2.getHeight());
+        Rectangle e1Mask = new Rectangle(e1.getX(), e1.getY(),
+                e1.getWidth(), e1.getHeight());
+        Rectangle e2Mask = new Rectangle(e2.getX(), e2.getY(),
+                e2.getWidth(), e2.getHeight());
 
         return e1Mask.intersects(e2Mask);
     }
 
     public void render(Graphics g) {
-        g.drawImage(sprite, this.getX() - Camera.x, this.getY() - Camera.y, null);
+        g.drawImage(sprite, this.getX() - Camera.x,
+                this.getY() - Camera.y, null);
     }
 
 }

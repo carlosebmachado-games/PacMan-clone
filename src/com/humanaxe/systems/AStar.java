@@ -36,8 +36,6 @@ public class AStar {
             Collections.sort(openList, nodeSorter);
             current = openList.get(0);
             if (current.tile.equals(end)) {
-                //Chegamos no ponto final!
-                //Basta retornar o valor!
                 List<Node> path = new ArrayList<>();
                 while (current.parent != null) {
                     path.add(current);
