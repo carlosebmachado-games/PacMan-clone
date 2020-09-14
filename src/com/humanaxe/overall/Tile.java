@@ -11,7 +11,7 @@ public class Tile {
     public static BufferedImage TILE_FLOOR = Game.spritesheet.getSprite(World.TILE_SIZE * 0, World.TILE_SIZE * 0, World.TILE_SIZE, World.TILE_SIZE);
     public static BufferedImage TILE_WALL = Game.spritesheet.getSprite(World.TILE_SIZE * 1, World.TILE_SIZE * 0, World.TILE_SIZE, World.TILE_SIZE);
 
-    private BufferedImage sprite;
+    private final BufferedImage sprite;
     private int x;
     private int y;
 

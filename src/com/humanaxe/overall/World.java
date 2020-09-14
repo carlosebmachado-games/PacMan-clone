@@ -7,11 +7,11 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import com.humanaxe.entities.Enemy;
 import com.humanaxe.entities.Entity;
 import com.humanaxe.entities.Food;
 import com.humanaxe.entities.Power;
 import com.humanaxe.main.Game;
+import javax.swing.JOptionPane;
 
 public class World {
 
@@ -68,6 +68,9 @@ public class World {
             }
             setEntitiesDefaultPosition();
         } catch (IOException e) {
+            JOptionPane.showMessageDialog(null,
+                    "The world could not be loaded.\nError: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -79,25 +82,30 @@ public class World {
         setOrangeGhostDefaultPosition();
         Game.redGhost.stopped = false;
     }
+
     public static void setPlayerDefaultPosition() {
         Game.player.setX((int) (13.5 * TILE_SIZE));
         Game.player.setY((int) (23 * TILE_SIZE));
     }
+
     public static void setRedGhostDefaultPosition() {
         Game.redGhost.setX((int) (13.5 * TILE_SIZE));
         Game.redGhost.setY((int) (11 * TILE_SIZE));
         Game.redGhost.path = null;
     }
+
     public static void setBlueGhostDefaultPosition() {
         Game.blueGhost.setX((int) (11.5 * TILE_SIZE));
         Game.blueGhost.setY((int) (14 * TILE_SIZE));
         Game.blueGhost.path = null;
     }
+
     public static void setPinkGhostDefaultPosition() {
         Game.pinkGhost.setX((int) (13.5 * TILE_SIZE));
         Game.pinkGhost.setY((int) (14 * TILE_SIZE));
         Game.pinkGhost.path = null;
     }
+
     public static void setOrangeGhostDefaultPosition() {
         Game.orangeGhost.setX((int) (15.5 * TILE_SIZE));
         Game.orangeGhost.setY((int) (14 * TILE_SIZE));

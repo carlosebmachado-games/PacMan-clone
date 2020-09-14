@@ -24,6 +24,7 @@ import com.humanaxe.systems.Camera;
 import java.awt.Font;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 
 public final class Game extends Canvas
         implements Runnable, KeyListener {
@@ -73,7 +74,11 @@ public final class Game extends Canvas
         // Init game objects
         try {
             mapbg = ImageIO.read(getClass().getResource("/map_sprite.png"));
-        } catch (IOException e) {}
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null,
+                    "An resource could not be loaded.\nError: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
         spritesheet = new Spritesheet("/spritesheet.png");
         entities = new ArrayList<>();
         player = new Player(0, 0, World.TILE_SIZE, World.TILE_SIZE, 2,
@@ -113,6 +118,9 @@ public final class Game extends Canvas
         try {
             thread.join();
         } catch (InterruptedException e) {
+            JOptionPane.showMessageDialog(null,
+                    "The game thread could not be loaded.\nError: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -122,7 +130,15 @@ public final class Game extends Canvas
                         TILE_SIZE * 2, TILE_SIZE * 0,
                         TILE_SIZE, TILE_SIZE));
         entities.clear();
+        redGhost = new Enemy(0, 0, TILE_SIZE, TILE_SIZE, 2, Entity.RGHOST);
+        blueGhost = new Enemy(0, 0, TILE_SIZE, TILE_SIZE, 1, Entity.BGHOST);
+        pinkGhost = new Enemy(0, 0, TILE_SIZE, TILE_SIZE, 1, Entity.PGHOST);
+        orangeGhost = new Enemy(0, 0, TILE_SIZE, TILE_SIZE, 2, Entity.OGHOST);
         entities.add(Game.player);
+        entities.add(Game.redGhost);
+        entities.add(Game.blueGhost);
+        entities.add(Game.pinkGhost);
+        entities.add(Game.orangeGhost);
         curFruit = 0;
         totalFruit = 0;
         world = new World("/map.png");
