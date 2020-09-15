@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import com.humanaxe.main.Game;
 import com.humanaxe.systems.Camera;
 import com.humanaxe.overall.World;
+import com.humanaxe.systems.Sound;
 
 public class Player extends Entity {
 
@@ -71,17 +72,36 @@ public class Player extends Entity {
             y += speed;
         }
 
-        verificarPegaFruta();
-
-        if (Game.curFruit >= Game.totalFruit) {
-            Game.state = Game.WIN;
+        // verifica se existe comida
+        for (Entity current : Game.entities) {
+            if (current instanceof Food || current instanceof Power) {
+                if (Entity.isColidding(this, current)) {
+                    if (current instanceof Power) {
+                        Game.entities.stream().filter((e) -> (e instanceof Enemy)).forEachOrdered((e) -> {
+                            ((Enemy) e).ghostMode = true;
+                        });
+                    }
+                    Game.curFruit++;
+                    Game.entities.remove(current);
+                    Sound.chomp.play();
+                    break;
+                }
+            }
         }
+
+        // verifica se acabou as frutas no mapa
+        if (Game.curFruit >= Game.totalFruit) {
+            Sound.intermission.play();
+            Game.state = Game.WIN;
+            return;
+        }
+        // verifica se ainda possui vidas
         if (lifes <= 0) {
             Game.state = Game.LOSE;
+            return;
         }
 
-        System.out.println("cond: "+(Game.SCREEN_WIDTH * Game.SCALE - World.TILE_SIZE));
-        System.out.println("x: "+x);
+        // verifica se chegou nas bordas para troca de lado no mapa
         if (x >= Game.SCREEN_WIDTH * Game.SCALE - World.TILE_SIZE - 1) {
             Game.player.setX((int) (0 * World.TILE_SIZE + 2));
             Game.player.setY((int) (14 * World.TILE_SIZE));
@@ -89,7 +109,8 @@ public class Player extends Entity {
             Game.player.setX((int) (27 * World.TILE_SIZE - 2));
             Game.player.setY((int) (14 * World.TILE_SIZE));
         }
-
+        
+        // cria a anim do pac-man
         if (moving()) {
             animCurFrame++;
             if (animCurFrame >= animMaxFrames) {
@@ -118,23 +139,6 @@ public class Player extends Entity {
                 World.WIDTH * World.TILE_SIZE - Game.SCREEN_WIDTH);
         Camera.y = Camera.clamp(getY() - (Game.SCREEN_HEIGHT / 2), 0,
                 World.HEIGHT * World.TILE_SIZE - Game.SCREEN_HEIGHT);
-    }
-
-    public void verificarPegaFruta() {
-        for (Entity current : Game.entities) {
-            if (current instanceof Food || current instanceof Power) {
-                if (Entity.isColidding(this, current)) {
-                    if (current instanceof Power) {
-                        Game.entities.stream().filter((e) -> (e instanceof Enemy)).forEachOrdered((e) -> {
-                            ((Enemy) e).ghostMode = true;
-                        });
-                    }
-                    Game.curFruit++;
-                    Game.entities.remove(current);
-                    return;
-                }
-            }
-        }
     }
 
     @Override

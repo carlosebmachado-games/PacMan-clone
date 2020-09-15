@@ -69,7 +69,7 @@ public class World {
             setEntitiesDefaultPosition();
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null,
-                    "The world could not be loaded.\nError: " + e.getMessage(),
+                    "An error occurred.\nMessage: " + e.getMessage(),
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
@@ -91,6 +91,12 @@ public class World {
     public static void setRedGhostDefaultPosition() {
         Game.redGhost.setX((int) (13.5 * TILE_SIZE));
         Game.redGhost.setY((int) (11 * TILE_SIZE));
+        Game.redGhost.path = null;
+    }
+
+    public static void setRedGhostInsidePosition() {
+        Game.redGhost.setX((int) (13.5 * TILE_SIZE));
+        Game.redGhost.setY((int) (14 * TILE_SIZE));
         Game.redGhost.path = null;
     }
 

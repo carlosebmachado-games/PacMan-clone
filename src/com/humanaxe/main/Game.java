@@ -21,7 +21,7 @@ import com.humanaxe.systems.UI;
 import com.humanaxe.overall.World;
 import static com.humanaxe.overall.World.TILE_SIZE;
 import com.humanaxe.systems.Camera;
-import java.awt.Font;
+import com.humanaxe.systems.Sound;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
@@ -51,7 +51,7 @@ public final class Game extends Canvas
     public static Enemy pinkGhost;
     public static Enemy orangeGhost;
 
-    public UI ui;
+    public static UI ui;
 
     public static int curFruit = 0;
     public static int totalFruit = 0;
@@ -73,13 +73,13 @@ public final class Game extends Canvas
 
         // Init game objects
         try {
-            mapbg = ImageIO.read(getClass().getResource("/map_sprite.png"));
+            mapbg = ImageIO.read(getClass().getResource("/sprite/map_sprite.png"));
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null,
-                    "An resource could not be loaded.\nError: " + e.getMessage(),
+                    "An error occurred.\nMessage: " + e.getMessage(),
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
-        spritesheet = new Spritesheet("/spritesheet.png");
+        spritesheet = new Spritesheet("/sprite/spritesheet.png");
         entities = new ArrayList<>();
         player = new Player(0, 0, World.TILE_SIZE, World.TILE_SIZE, 2,
                 spritesheet.getSprite(World.TILE_SIZE * 2, World.TILE_SIZE * 0,
@@ -88,7 +88,7 @@ public final class Game extends Canvas
         blueGhost = new Enemy(0, 0, TILE_SIZE, TILE_SIZE, 1, Entity.BGHOST);
         pinkGhost = new Enemy(0, 0, TILE_SIZE, TILE_SIZE, 1, Entity.PGHOST);
         orangeGhost = new Enemy(0, 0, TILE_SIZE, TILE_SIZE, 2, Entity.OGHOST);
-        world = new World("/map.png");
+        world = new World("/sprite/map.png");
         ui = new UI();
 
         entities.add(player);
@@ -96,6 +96,8 @@ public final class Game extends Canvas
         entities.add(blueGhost);
         entities.add(pinkGhost);
         entities.add(orangeGhost);
+        
+        Sound.beginning.play();
     }
 
     public void initFrame() {
@@ -119,7 +121,7 @@ public final class Game extends Canvas
             thread.join();
         } catch (InterruptedException e) {
             JOptionPane.showMessageDialog(null,
-                    "The game thread could not be loaded.\nError: " + e.getMessage(),
+                    "An error occurred.\nMessage: " + e.getMessage(),
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
@@ -141,7 +143,7 @@ public final class Game extends Canvas
         entities.add(Game.orangeGhost);
         curFruit = 0;
         totalFruit = 0;
-        world = new World("/map.png");
+        world = new World("/sprite/map.png");
         state = PLAYING;
         Player.lifes = 3;
         player.dir = Player.BALL;

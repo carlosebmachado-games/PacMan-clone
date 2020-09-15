@@ -9,13 +9,14 @@ import com.humanaxe.systems.AStar;
 import com.humanaxe.systems.Camera;
 import com.humanaxe.systems.Vector2i;
 import com.humanaxe.overall.World;
+import com.humanaxe.systems.Sound;
 
 public class Enemy extends Entity {
 
     public boolean ghostMode = false;
-    private int ghostModeCurFrame = 0, ghostModeMaxFrames = 180;
+    private int ghostModeCurFrame = 0, ghostModeMaxFrames = 300;
     public boolean stopped = true;
-    private int stopCurFrame = 0, stopMaxFrames = 180;
+    private int stopCurFrame = 0, stopMaxFrames = 240;
 
     public Enemy(int x, int y, int width, int height, int speed, BufferedImage sprite) {
         super(x, y, width, height, speed, sprite);
@@ -64,16 +65,18 @@ public class Enemy extends Entity {
 
         if (isColidding(this, Game.player)) {
             if (!ghostMode) {
+                Sound.death.play();
                 Player.lifes--;
                 World.setEntitiesDefaultPosition();
                 Game.player.dir = Player.BALL;
                 Game.player.newDir = Player.BALL;
             } else {
+                Sound.eatghost.play();
                 ghostModeCurFrame = 0;
                 ghostMode = false;
                 stopped = true;
                 if (sprite == Entity.RGHOST) {
-                    World.setRedGhostDefaultPosition();
+                    World.setRedGhostInsidePosition();
                 } else if (sprite == Entity.BGHOST) {
                     World.setBlueGhostDefaultPosition();
                 } else if (sprite == Entity.PGHOST) {
